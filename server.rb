@@ -3,8 +3,11 @@ require 'sinatra'
 
 enable :sessions
 
-
-set :database, {adapter: "sqlite3", database: "database.sqlite3"}
+if ENV['RACK_ENV']
+	ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
+  else
+	set :database, {adapter: "sqlite3", database: "database.sqlite3"}
+  end
 
 class User < ActiveRecord::Base
 
