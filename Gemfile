@@ -4,7 +4,7 @@ gem 'sqlite3'
 gem 'rake'
 gem 'sinatra'
 
-group :devolpment do
+group :development do
 gem 'sqlite3'
 end
 
