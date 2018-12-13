@@ -6,3 +6,19 @@
 /*  in your page by adding a reference to assets/css/custom.css in the head of each page.
 /*
 */
+.bg-gradient {
+    background: linear-gradient(135deg, #6c757d 0%, #212529 100%);
+    /* background-image: url("/assets/img/cityhall.jpg"); */
+    background-image: radial-gradient(transparent, rgba(0, 0, 0, 0.7), black), url("/assets/img/cityhall.jpg");
+    background-size: cover;
+    background-size: 100%;
+    background-position-x: initial;
+    background-position-y: initial;
+    /* background-size: initial; */
+    background-repeat-x: none;
+    background-repeat-y: none;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: initial;
+}

@@ -13,6 +13,10 @@ $scrollbar-size: 20px;
     @return $num-cols * $item-size + ($num-cols - 1) * $col-gutter;
 }
 
+.bg-gradient{
+    background: linear-gradient(135deg, $purple 0%,$blue 100%);
+  }
+  
 @mixin when-n-cols($n) {
     @media screen and (min-width: #{grid-width($n) + 2 * $vp-gutter + $scrollbar-size}) {
         @content;

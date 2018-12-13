@@ -39,21 +39,20 @@ get '/' do
 end
 
 get '/post' do 
-	erb :post	
+	erb :post, :layout => :layout_loggedin	
 end
 
 get '/index' do 
 	erb :index	
 end
 
-#Logged in state homepage  ITOWRRRRKKKKSSSS DONT TOUCH
+
 
 get '/home' do 
 	@user = User.find(session[:id])
 	erb :home,:layout => :layout_loggedin
  end
 
-# signup route for signup form  ITOWRRRRKKKKSSSS DONT TOUCH
 get '/signup' do
 	erb :signup
 end
