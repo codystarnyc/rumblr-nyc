@@ -1,0 +1,14 @@
+<hr>
+<% @post = Post.where(user_id: session[:id])%>
+<% @post.each do |post| %>
+<div class="container blog">
+	<div class="postbox jumbotron-fluid">
+	<h3><%= post.title %></h3>
+	<br>
+	<p><%= post.body %></p>
+	<p><a href="myblog/<%= post.id %>/edit">Edit</a></p>
+</div>
+</div>
+<% end %>
+
+
