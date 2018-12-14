@@ -1,0 +1,62 @@
+ <hr/>
+     <h2>Hello,  <%= session[:id].first_name%>!</h2>
+
+ <hr/>
+<div class="jumbotron jumbotron-fluid">
+  <div class="container profile">
+    <img src="assets/img/me.jpg" class="rounded float-left zeepic" alt="zeepc">
+    <h5>About  <%= session[:id].first_name%></h5>
+    <p class="lead"><em>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua.</em></p>
+  </div>
+
+<div class="profile-div">
+  <div class="profile-innerdiv">
+
+  <div class="profile-row">
+    WELCOME TO YOUR PROFILE
+    </div>
+    <br>
+    <div class="profile-row">
+    <div>
+      NAME:
+    </div>
+    <div>
+      <%= session[:id].first_name%>
+      <%= session[:id].last_name%>
+    </div>
+    </div>
+    <div class="profile-row">
+    <div>
+      USERNAME:
+    </div>
+    <div>
+      <%= session[:id].username%>
+    </div>
+  </div>
+  <div class="profile-row">
+    <div>
+     BIRTHDAY:
+    </div>
+    
+  </div>
+  <div class="profile-row">
+    <div>
+      BIRTHDAY:
+    </div>
+   
+  </div>
+  <div class="profile-row">
+    <div>
+      EMAIL:
+    </div>
+    <div>
+      <%= session[:id].email%><br>
+    </div>
+  </div>
+
+    <a href="/deleteaccount">
+      &nbsp;DELETE ACCOUNT&nbsp;
+    </a>
+  </div>
+</div>

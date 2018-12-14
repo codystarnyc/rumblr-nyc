@@ -29,9 +29,7 @@ class Tag < ActiveRecord::Base
 
 end
 
-class User < ActiveRecord::Base
-	
-end
+
 
 get '/' do 
     p session
@@ -96,15 +94,22 @@ end
 # end
 
 
-get '/admin' do 
-	@user = User.find(session[:id])
-	erb :admin, :layout => :layout_loggedin
-end
+get '/profile' do
+	if !session[:id].nil?
+	  erb :profile, :layout => :layout_loggedin 
+	else
+	  erb :login
+	end
+  end
+	# @user = User.find(session[:id])
+# 	erb :admin, :layout => :layout_loggedin
+# end
 
-get '/admin/:id' do 
-	@user = User.find(session[:id])
-	erb :admin, :layout => :layout_loggedin
-end
+
+# get '/admin/:id' do 
+# 	@user = User.find(session[:id])
+# 	erb :admin, :layout => :layout_loggedin
+# end
 
 
 get '/login' do
