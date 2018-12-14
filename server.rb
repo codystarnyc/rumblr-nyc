@@ -61,13 +61,39 @@ get '/invalid' do
 	erb :invalid
   end
 
-
-post '/signup' do
-	@user = User.create(first_name: params[:first_name], last_name: params[:last_name], email: params[:email], username: params[:username], password: params[:password], birthday: params[:birthday])
-    session[:id]= @user.id
-    @user.save
-	erb :home, :layout => :layout_loggedin 
+  post '/signup' do
+	p params
+	user = User.new(
+	  email: params['email'],
+	  first_name: params['first_name'],
+	  last_name: params['last_name'],
+	  username: params['username'],
+	  password: params['password'],
+	  birthday: params['birthday']
+	)
+  
+	user.save
+  
+	if user != nil
+	  # this signs them in
+	  email = params['email']
+	  input_password = params['password']
+	  user = User.find_by(email: email)
+  
+		user.password == input_password
+		session[:id] = user
+		erb :home, :layout => :layout_loggedin 
+	else
+	  p 'error in signup'
+	  redirect '/signup'
+	end
 end
+# post '/signup' do
+# 	@user = User.create(first_name: params[:first_name], last_name: params[:last_name], email: params[:email], username: params[:username], password: params[:password], birthday: params[:birthday])
+#     session[:id]= @user.id
+#     @user.save
+	# erb :home, :layout => :layout_loggedin 
+# end
 
 
 get '/admin' do 
@@ -85,18 +111,21 @@ get '/login' do
 	erb :login
 end
 
+
 post '/login' do
-	email = params[:email]
-    given_password = params[:password]
-    user = User.find_by(email: email)
-     if user.password == given_password
-    session[:id] = user.id
-# p user
-    redirect '/home'
-     else
-     redirect '/invalid'
+	email = params['email']
+	input_password = params['password']
+  
+	user = User.find_by(email: email)
+	unless user == nil
+	  if user.password == input_password
+		session[:id] = user
+		 erb :home, :layout => :layout_loggedin
+	  else
+		redirect '/invalid'
+	  end
+	end
   end
-end
 
 
 # Logout
@@ -111,9 +140,27 @@ get '/new' do
 end
 
  post '/new' do 
- 	@post = Post.create(title:params[:title],body:params[:body],date: params[:date],user_id: session[:id])
- 	redirect :'/home'	
- end
+	posting = Post.create(
+		title: params[:title],
+		body: params[:body],
+		date: params[:date],
+		user_id: session[:id].id
+	  )
+	
+	  if !posting.nil?
+		posting.save
+	  else
+		p 'try again'
+	  end
+	
+	  redirect '/new'
+end
+
+
+
+#  	@post = Post.create(title:params[:title],body:params[:body],date: params[:date],user_id: session[:id])
+#  	redirect :'/home', :layout => :layout_loggedin	
+#  end
 
 
  get '/myblog' do
