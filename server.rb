@@ -10,11 +10,11 @@ if ENV['RACK_ENV']
   end
 
 class User < ActiveRecord::Base
-
+	has_many :posts
 end
 
 class Post < ActiveRecord::Base
-
+   belongs_to :user
 end
 
 class Favorite < ActiveRecord::Base
@@ -141,13 +141,13 @@ post '/login' do
   end
 
 
-# Logout
+
 get '/logout' do
 	session.clear
 	redirect :'/login'
 end
 
-#New get and post route
+
 get '/new' do 
 	erb :new, :layout => :layout_loggedin
 end
@@ -183,48 +183,37 @@ get '/social' do
 end
 
 
-# Setup other user's profile and blog one page
-get '/profile' do
+get '/profileblog' do
 	@specific_profile = User.find(params[:id])
-	erb :profile, :layout => :layout_loggedin
+	erb :profileblog, :layout => :layout_loggedin
 end
 
-get '/profile/:id' do
+get '/profileblog/:id' do
 	@specific_profile = User.find(params[:id])
 	@post = Post.where(user_id: @specific_profile.id)
-	erb :profile, :layout => :layout_loggedin
+	erb :profileblog, :layout => :layout_loggedin
 end
 
-
-# Render form for editing a new post (U)
 get '/myblog/:id/edit' do 
     @specific_post = Post.find(params[:id])
     erb :edit, :layout => :layout_loggedin
 end
 
 
-#Edit post from /id/edit route (U)
 put '/myblog/:id' do
     @specific_post = Post.find(params[:id])
     @specific_post.update(title:params[:title],body:params[:body],date: params[:date],user_id: session[:id])
     redirect :'/myblog'
 end
 
-# Show individual post
+
 get '/myblog/:id' do
 	@post = Post.find(params[:id])
 	erb :post, :layout => :layout_loggedin
 end
   
-# Delete Attendee (D)
-delete '/admin' do
-	@current_user = session[:id]
-    User.destroy(@current_user)
-    session.clear
-    redirect :'/signup'
-end
 
-#Delete Post
+
 
 delete '/myblog/:id' do
   @specific_post = Post.destroy(params[:id])
