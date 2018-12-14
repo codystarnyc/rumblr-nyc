@@ -47,9 +47,15 @@ end
 
 
 get '/home' do 
-	@user = User.find(session[:id])
-	erb :home,:layout => :layout_loggedin
- end
+	if !session[:id].nil?
+		# @specific_profile = User.find(params[:id])
+			erb :home, :layout => :layout_loggedin 
+		else
+			erb :login
+		end
+end
+
+
 
 get '/signup' do
 	erb :signup
@@ -73,7 +79,6 @@ get '/invalid' do
 	user.save
   
 	if user != nil
-	  # this signs them in
 	  email = params['email']
 	  input_password = params['password']
 	  user = User.find_by(email: email)
@@ -86,16 +91,12 @@ get '/invalid' do
 	  redirect '/signup'
 	end
 end
-# post '/signup' do
-# 	@user = User.create(first_name: params[:first_name], last_name: params[:last_name], email: params[:email], username: params[:username], password: params[:password], birthday: params[:birthday])
-#     session[:id]= @user.id
-#     @user.save
-	# erb :home, :layout => :layout_loggedin 
-# end
+
 
 
 get '/profile' do
 	if !session[:id].nil?
+	# @specific_profile = User.find(params[:id])
 	  erb :profile, :layout => :layout_loggedin 
 	else
 	  erb :login
@@ -110,7 +111,14 @@ get '/profile' do
 # 	@user = User.find(session[:id])
 # 	erb :admin, :layout => :layout_loggedin
 # end
-
+get '/notification' do
+	if !session[:id].nil?
+	# @specific_profile = User.find(params[:id])
+	  erb :notification, :layout => :layout_loggedin 
+	else
+	  erb :login
+	end
+  end
 
 get '/login' do
 	erb :login
@@ -163,24 +171,11 @@ end
 
 
 
-#  	@post = Post.create(title:params[:title],body:params[:body],date: params[:date],user_id: session[:id])
-#  	redirect :'/home', :layout => :layout_loggedin	
-#  end
-
-
  get '/myblog' do
  	@post = Post.where(user_id: session[:id])
  	erb :myblog, :layout => :layout_loggedin
  end
 
-#  get '/home' do
-#  	@user = User.find(session[:id])
-#  	@post = Post.where(user_id: session[:id])
-#  	erb :home, :layout => :layout_loggedin 
-#  end
-
-
-# Show all users in "Social" page
 
 get '/social' do
 	@users = User.all
@@ -235,4 +230,11 @@ delete '/myblog/:id' do
   @specific_post = Post.destroy(params[:id])
   redirect '/myblog'
 end
+
+post '/delete' do
+	User.find(session[:id].id).destroy 
+	p "USER #{session[:id].first_name} DELETED"
+	session[:id] = nil
+	redirect '/logout'
+  end
 

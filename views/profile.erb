@@ -1,23 +1,23 @@
+
+ 
  <hr/>
      <h2>Hello,  <%= session[:id].first_name%>!</h2>
 
  <hr/>
 <div class="jumbotron jumbotron-fluid">
   <div class="container profile">
-    <img src="assets/img/me.jpg" class="rounded float-left zeepic" alt="zeepc">
+    <img src="assets/img/me.jpg" class="avatar avatar-md" alt="pat">
     <h5>About  <%= session[:id].first_name%></h5>
     <p class="lead"><em>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
     tempor incididunt ut labore et dolore magna aliqua.</em></p>
-  </div>
+  
 
-<div class="profile-div">
-  <div class="profile-innerdiv">
 
-  <div class="profile-row">
+  <div>
     WELCOME TO YOUR PROFILE
     </div>
     <br>
-    <div class="profile-row">
+    <div>
     <div>
       NAME:
     </div>
@@ -26,7 +26,7 @@
       <%= session[:id].last_name%>
     </div>
     </div>
-    <div class="profile-row">
+    <div>
     <div>
       USERNAME:
     </div>
@@ -34,19 +34,17 @@
       <%= session[:id].username%>
     </div>
   </div>
-  <div class="profile-row">
+  <div>
     <div>
-     BIRTHDAY:
+     BIRTHDAY:  
     </div>
-    
-  </div>
-  <div class="profile-row">
     <div>
-      BIRTHDAY:
+  <%= session[:id].birthday%>
     </div>
+ 
    
-  </div>
-  <div class="profile-row">
+ 
+  <div>
     <div>
       EMAIL:
     </div>
@@ -54,9 +52,14 @@
       <%= session[:id].email%><br>
     </div>
   </div>
-
-    <a href="/deleteaccount">
-      &nbsp;DELETE ACCOUNT&nbsp;
+<form method="POST" action="/delete">
+    <a href="/delete">
+     <button>DELETE ACCOUNT</button>
     </a>
+ 
+  
   </div>
-</div>
+  
+  </div>
+
+

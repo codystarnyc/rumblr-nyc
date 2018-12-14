@@ -1,9 +1,27 @@
 <hr>
-
+	<% if session[:id] == nil %>
+  <% redirect '/invalid' %>
+    <% elsif session[:id] != nil %><%end%>
 <div class="container blog">
 	<div class="postbox jumbotron-fluid">
-	<h3><%= @post.title %></h3>
-	<br>
-	<p><%= @post.body %></p>
+
+ 
+    <h1 class="set-cont">More of <%= session[:id].name%>'s Posts</h1>
+    <% @userposts.first(20).reverse.each do |o| o.created_at %>
+      <div class="post-cont">
+        <h2> <%= o.title %></h2>
+        <p>By:
+          <%= o.author %></p>
+
+        <p>Content: <%= o.content %></p>
+        <p>Posted At:
+          <%= o.created_at %></p>
+
+        <a href="/postdestroyer/<%= o.id %>">
+          <button class="signup-btn">
+            Delete Post</button>
+        </a>
+      </div>
+    <%end%>
 </div>
 </div>
