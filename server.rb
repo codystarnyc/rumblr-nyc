@@ -11,19 +11,26 @@ if ENV['RACK_ENV']
 
 class User < ActiveRecord::Base
 	has_many :posts
+	has_many :tags
+	has_many :favorites
 end
 
 class Post < ActiveRecord::Base
-   belongs_to :user
+	 belongs_to :user
+	 belongs_to :tag
 end
 
 class Favorite < ActiveRecord::Base
-	
+	belongs_to :user
+	belongs_to :post
 end
 
 class PostTag < ActiveRecord::Base
-
+	belongs_to :tag
+	belongs_to :post
+	has_many :tags, through: :post_tags
 end
+
 
 class Tag < ActiveRecord::Base
 
@@ -37,7 +44,7 @@ get '/' do
 end
 
 get '/post' do 
-	erb :post, :layout => :layout_loggedin	
+	erb :post, :layout => :layout_profile
 end
 
 get '/index' do 
@@ -68,21 +75,12 @@ get '/invalid' do
   post '/signup' do
 	p params
 	user = User.new(
-	  email: params['email'],
-	  first_name: params['first_name'],
-	  last_name: params['last_name'],
-	  username: params['username'],
-	  password: params['password'],
-	  birthday: params['birthday']
-	)
-  
-	user.save
-  
-	if user != nil
+	  email: params['email'],first_name: params['first_name'],last_name: params['last_name'],username: params['username'],password: params['password'],birthday: params['birthday'])
+  user.save
+  if user != nil
 	  email = params['email']
 	  input_password = params['password']
-	  user = User.find_by(email: email)
-  
+	  user = User.find_by(email: email) 
 		user.password == input_password
 		session[:id] = user
 		erb :home, :layout => :layout_loggedin 
@@ -97,24 +95,16 @@ end
 get '/profile' do
 	if !session[:id].nil?
 	# @specific_profile = User.find(params[:id])
-	  erb :profile, :layout => :layout_loggedin 
+	  erb :profile, :layout => :layout_loggedin
 	else
 	  erb :login
 	end
   end
-	# @user = User.find(session[:id])
-# 	erb :admin, :layout => :layout_loggedin
-# end
 
-
-# get '/admin/:id' do 
-# 	@user = User.find(session[:id])
-# 	erb :admin, :layout => :layout_loggedin
-# end
 get '/notification' do
 	if !session[:id].nil?
 	# @specific_profile = User.find(params[:id])
-	  erb :notification, :layout => :layout_loggedin 
+	  erb :notification, :layout => :layout_loggedin
 	else
 	  erb :login
 	end
@@ -149,7 +139,7 @@ end
 
 
 get '/new' do 
-	erb :new, :layout => :layout_loggedin
+	erb :new, :layout => :layout_profile
 end
 
  post '/new' do 
@@ -179,37 +169,37 @@ end
 
 get '/social' do
 	@users = User.all
-	erb :social, :layout => :layout_loggedin 
+	erb :social, :layout => :layout_loggedin
 end
 
 
 get '/profileblog' do
 	@specific_profile = User.find(params[:id])
-	erb :profileblog, :layout => :layout_loggedin
+	erb :profileblog, :layout => :layout_profile
 end
 
 get '/profileblog/:id' do
 	@specific_profile = User.find(params[:id])
 	@post = Post.where(user_id: @specific_profile.id)
-	erb :profileblog, :layout => :layout_loggedin
+	erb :profileblog, :layout => :layout_profile
 end
 
 get '/myblog/:id/edit' do 
     @specific_post = Post.find(params[:id])
-    erb :edit, :layout => :layout_loggedin
+    erb :edit, :layout => :layout_profile
 end
 
 
 put '/myblog/:id' do
     @specific_post = Post.find(params[:id])
     @specific_post.update(title:params[:title],body:params[:body],date: params[:date],user_id: session[:id])
-    redirect :'/myblog'
+    redirect '/myblog'
 end
 
 
 get '/myblog/:id' do
 	@post = Post.find(params[:id])
-	erb :post, :layout => :layout_loggedin
+	erb :post, :layout =>  :layout_profile
 end
   
 
