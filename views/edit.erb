@@ -13,6 +13,11 @@
       <input type="text" class="form-control"  name="date" class="dateinput"  value="<%= @specific_post.date %>">
     </div>
 
+<p>
+     <button type="button" class="btn btn-default btn-sm">
+     <span class="glyphicon glyphicon-trash"></span> Trash 
+    </button>
+ </p>
 
   <form action="/myblog/<%= @specific_post.id %>/edit" method="post">
     <input type="hidden" name="_method" value="PUT">
