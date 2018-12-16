@@ -214,14 +214,14 @@ get '/myblog/:id/edit' do
 end
 
 
-#Edit post from /id/edit route (U)
+
 put '/myblog/:id' do
     @specific_post = Post.find(params[:id])
     @specific_post.update(title:params[:title],body:params[:body],date: params[:date],user_id: session[:id])
     redirect '/myblog'
 end
 
- # Show individual post
+ 
 get '/myblog/:id' do
 	@post = Post.find(params[:id])
 	erb :post, :layout => :layout_loggedin
