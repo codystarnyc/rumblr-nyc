@@ -241,7 +241,7 @@ end
 end
 
 
-post '/delete_post' do
+post '/delete_post/:id' do
   @specific_post = Post.destroy(params[:id])
   redirect '/myblog'
 end
