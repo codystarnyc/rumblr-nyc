@@ -55,7 +55,6 @@ end
 
 get '/home' do 
 	if !session[:id].nil?
-		# @specific_profile = User.find(params[:id])
 			erb :home, :layout => :layout_loggedin 
 		else
 			erb :login
@@ -94,7 +93,7 @@ end
 
 get '/profile' do
 	if !session[:id].nil?
-	# @specific_profile = User.find(params[:id])
+
 	  erb :profile, :layout => :layout_loggedin
 	else
 	  erb :login
@@ -103,7 +102,7 @@ get '/profile' do
 
 get '/notification' do
 	if !session[:id].nil?
-	# @specific_profile = User.find(params[:id])
+
 	  erb :notification, :layout => :layout_loggedin
 	else
 	  erb :login
@@ -139,8 +138,15 @@ end
 
 
 get '/new' do 
-	erb :new, :layout => :layout_profile
+	if !session[:id].nil?
+
+		erb :new, :layout => :layout_profile
+	else
+	  erb :login
+	end
 end
+
+
 
  post '/new' do 
 	posting = Post.create(
@@ -162,20 +168,38 @@ end
 
 
  get '/myblog' do
- 	@post = Post.where(user_id: session[:id])
- 	erb :myblog, :layout => :layout_loggedin
+	 @post = Post.where(user_id: session[:id])
+	 if !session[:id].nil?
+
+		erb :myblog, :layout => :layout_loggedin
+	else
+	  erb :login
+	end
+ 	
  end
 
 
 get '/social' do
 	@users = User.all
-	erb :social, :layout => :layout_loggedin
+	if !session[:id].nil?
+
+		erb :social, :layout => :layout_loggedin
+	else
+	  erb :login
+	end
+
 end
 
 
 get '/profileblog' do
 	@specific_profile = User.find(params[:id])
-	erb :profileblog, :layout => :layout_profile
+	if !session[:id].nil?
+
+		erb :profileblog, :layout => :layout_profile
+	else
+	  erb :login
+	end
+	
 end
 
 get '/profileblog/:id' do
@@ -190,22 +214,34 @@ get '/myblog/:id/edit' do
 end
 
 
+#Edit post from /id/edit route (U)
 put '/myblog/:id' do
     @specific_post = Post.find(params[:id])
     @specific_post.update(title:params[:title],body:params[:body],date: params[:date],user_id: session[:id])
     redirect '/myblog'
 end
 
-
+ # Show individual post
 get '/myblog/:id' do
 	@post = Post.find(params[:id])
-	erb :post, :layout =>  :layout_profile
+	erb :post, :layout => :layout_loggedin
+end 
+
+get "/feed" do
+
+		@users = User.all.reverse
+		@posts = Post.all.reverse
+		if !session[:id].nil?
+		erb :feed, :layout => :layout_loggedin
+		
+else 
+		redirect '/login'
 end
-  
+ 
+end
 
 
-
-delete '/myblog/:id' do
+post '/delete_post' do
   @specific_post = Post.destroy(params[:id])
   redirect '/myblog'
 end
@@ -214,6 +250,6 @@ post '/delete' do
 	User.find(session[:id].id).destroy 
 	p "USER #{session[:id].first_name} DELETED"
 	session[:id] = nil
-	redirect '/logout'
+	redirect '/login'
   end
 
