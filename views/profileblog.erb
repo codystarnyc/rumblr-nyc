@@ -27,7 +27,7 @@
                                     </a>
                                     <div class="my-3">
                                         <div class="mb-2">
-                                            <h5 class="mb-0">Michael Law</h5>
+                                           		  <h1><%= @specific_profile.first_name %>'s Blog</h1>
                                             <span class="text-muted">NYCDA Instructor</span>
                                         </div>
                                         <span class="text-small text-muted"><i class="icon-location"></i> New York, NY</span>
@@ -123,7 +123,7 @@
                         </div>
                         <!--end of col-->
                         <div class="col-12 col-md-8">
-						  <h1><%= @specific_profile.first_name %>'s Blog</h1>
+				
 
 
                           <% @specific_post.reverse.each do |post| %>
@@ -166,7 +166,7 @@
                 </div>
                 <!--end of container-->
             </section>
-             <%= will_paginate @specific_post %> 
+            <% will_paginate @specific_post %>
             <footer class="footer-short">
                 <div class="container">
                     <hr>

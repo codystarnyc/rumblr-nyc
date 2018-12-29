@@ -15,7 +15,7 @@
                                     </a>
                                     <div class="my-3">
                                         <div class="mb-2">
-                                            <h5 class="mb-0">Patrick Alcindor</h5>
+                                            <h1><%= @specific_profile.first_name %>'s Blog</h1>
                                             <span class="text-muted">Front-End Product Engineer</span>
                                         </div>
                                         <span class="text-small text-muted"><i class="icon-location"></i> New York, NY</span>
@@ -112,8 +112,9 @@
                         <!--end of col-->
                         <div class="col-12 col-md-8">
 						
+                      
                        
-                        <% @post.reverse.each do |post| %>
+                       <% @post.reverse.each do |post| %>
 
                             <div class="card">
                                 <div class="card-header card-header-borderless d-flex justify-content-between">

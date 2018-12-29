@@ -97,12 +97,14 @@ end
 
 get '/profile' do
 	if !session[:id].nil?
-
+		# @user = User.find(params[:id])
 	  erb :profile, :layout => :layout_loggedin
 	else
 	  erb :login
 	end
-  end
+	end
+	
+
 
 get '/notification' do
 	if !session[:id].nil?
@@ -172,8 +174,11 @@ end
 
 
  get '/myblog' do
+	@specific_profile = session[:id]
+	# @specific_profile = User.find(session[:user_id])
 	# @user = User.find(session[:user_id])
-	@post = User.where(user_id: session[:id])
+	# @post = Post.where(user_id: session[:id])
+  @post = Post.where(user_id: @specific_profile.id)
 	@post = Post.paginate(:page => params[:page], :per_page => 20)
 	 if !session[:id].nil?
 		
@@ -199,17 +204,17 @@ get '/social' do
 end
 
 
-get '/profileblog' do
-	@specific_profile = User.find(params[:id])
+# get '/profileblog' do
+# 	@specific_profile = User.find(params[:id])
  
-	if !session[:id].nil?
+# 	if !session[:id].nil?
 	
-		erb :profileblog, :layout => :layout_profile
-	else
-	  erb :login
-	end
+# 		erb :profileblog, :layout => :layout_profile
+# 	else
+# 	  erb :login
+# 	end
 	
-end
+# end
 
 get '/profileblog/:id' do
 	@specific_profile = User.find(params[:id])
@@ -219,23 +224,26 @@ get '/profileblog/:id' do
 	erb :profileblog, :layout => :layout_profile
 end
 
-get '/myblog/:id/edit' do 
-    @specific_post = Post.find(params[:id])
-    erb :edit, :layout => :layout_profile
-end
+# get '/myblog/:id/edit' do 
+#     @specific_post = Post.find(params[:id])
+#     erb :edit, :layout => :layout_profile
+# end
 
 
 
-put '/myblog/:id' do
-    @specific_post = Post.find(params[:id])
-    @specific_post.update(title:params[:title],body:params[:body],date: params[:date],user_id: session[:id])
-    redirect '/myblog'
-end
+# put '/myblog/:id' do
+#     @specific_post = Post.find(params[:id])
+#     @specific_post.update(title:params[:title],body:params[:body],date: params[:date],user_id: session[:id])
+#     redirect '/myblog'
+# end
 
  
 get '/myblog/:id' do
-	@post = Post.find(params[:id])
-	erb :post, :layout => :layout_loggedin
+	@specific_profile = User.find(params[:id])
+	@specific_post = Post.where(user_id: @specific_profile.id)
+	@post = Post.paginate(:page => params[:page], :per_page => 20)
+	# @specific_post = Post.where(user_id: @specific_profile.id)
+	erb :profileblog, :layout => :layout_profile
 end 
 
 get "/feed" do
