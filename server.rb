@@ -1,5 +1,8 @@
 require "sinatra/activerecord"
 require 'sinatra'
+require 'will_paginate'
+require 'will_paginate/array' 
+require 'will_paginate/active_record'
 
 enable :sessions
 
@@ -18,6 +21,7 @@ end
 class Post < ActiveRecord::Base
 	 belongs_to :user
 	 belongs_to :tag
+
 end
 
 class Favorite < ActiveRecord::Base
@@ -168,9 +172,12 @@ end
 
 
  get '/myblog' do
-	 @post = Post.where(user_id: session[:id])
+	@post = Post.where(user_id: session[:id])
+	@post = Post.paginate(:page => params[:page], :per_page => 20)
 	 if !session[:id].nil?
-
+		
+		# @posts = Post.all
+	
 		erb :myblog, :layout => :layout_loggedin
 	else
 	  erb :login
@@ -192,9 +199,9 @@ end
 
 
 get '/profileblog' do
-	@specific_profile = User.find(params[:id])
+	# @specific_profile = User.find(params[:id])
 	if !session[:id].nil?
-
+	
 		erb :profileblog, :layout => :layout_profile
 	else
 	  erb :login
@@ -205,6 +212,7 @@ end
 get '/profileblog/:id' do
 	@specific_profile = User.find(params[:id])
 	@post = Post.where(user_id: @specific_profile.id)
+	@post = Post.paginate(:page => params[:page], :per_page => 20)
 	erb :profileblog, :layout => :layout_profile
 end
 
@@ -230,7 +238,7 @@ end
 get "/feed" do
 
 		@users = User.all.reverse
-		@posts = Post.all.reverse
+		@posts = Post.paginate(:page => params[:page], :per_page => 20)
 		if !session[:id].nil?
 		erb :feed, :layout => :layout_loggedin
 		

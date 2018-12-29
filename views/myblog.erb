@@ -112,7 +112,7 @@
                         <!--end of col-->
                         <div class="col-12 col-md-8">
 						
-                       <% @post = Post.where(user_id: session[:id])%>
+                       
                         <% @post.reverse.each do |post| %>
 
                             <div class="card">
@@ -154,6 +154,7 @@
                 </div>
                 <!--end of container-->
             </section>
+            <%= will_paginate @post %> 
             <footer class="footer-short">
                 <div class="container">
                     <hr>
@@ -201,4 +202,5 @@
                 <!--end of container-->
             </footer>
         </div>
+
 

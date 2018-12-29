@@ -124,8 +124,8 @@
                         <!--end of col-->
                         <div class="col-12 col-md-8">
 						  <h1><%= @specific_profile.first_name %>'s Blog</h1>
-                        <% @post = Post.where(user_id: @specific_profile.id)%>
-                          <% @post.each do |post| %>
+                          
+                          <% @post.reverse.each do |post| %>
 
                             <div class="card">
                                 <div class="card-header card-header-borderless d-flex justify-content-between">
@@ -136,9 +136,7 @@
                                <span class="card-title"><%= post.title %></span>
                                 <p><%= post.body %></p>
                                 </div>
-                             <div class="card-action">
-                             <a class="username-link" href="/user-profile/<%= post.user.id %>"><%= post.user.username %></a>
-                              </div>
+                            
                                 <div class="card-footer d-flex justify-content-between">
                                     <div>
                                         <button class="btn btn-sm btn-outline-secondary">Comment</button>
@@ -167,6 +165,7 @@
                 </div>
                 <!--end of container-->
             </section>
+             <%= will_paginate @post %> 
             <footer class="footer-short">
                 <div class="container">
                     <hr>
