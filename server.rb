@@ -172,7 +172,8 @@ end
 
 
  get '/myblog' do
-	@post = Post.where(user_id: session[:id])
+	# @user = User.find(session[:user_id])
+	@post = User.where(user_id: session[:id])
 	@post = Post.paginate(:page => params[:page], :per_page => 20)
 	 if !session[:id].nil?
 		
@@ -199,7 +200,8 @@ end
 
 
 get '/profileblog' do
-	# @specific_profile = User.find(params[:id])
+	@specific_profile = User.find(params[:id])
+ 
 	if !session[:id].nil?
 	
 		erb :profileblog, :layout => :layout_profile
@@ -211,8 +213,9 @@ end
 
 get '/profileblog/:id' do
 	@specific_profile = User.find(params[:id])
-	@post = Post.where(user_id: @specific_profile.id)
-	@post = Post.paginate(:page => params[:page], :per_page => 20)
+	@specific_post = Post.where(user_id: @specific_profile.id)
+	@specific_post = Post.paginate(:page => params[:page], :per_page => 20)
+	# @specific_post = Post.where(user_id: @specific_profile.id)
 	erb :profileblog, :layout => :layout_profile
 end
 
